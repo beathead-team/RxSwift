@@ -71,4 +71,23 @@
         }
     }
 
+    extension Reactive where Base: UIViewController {
+        public typealias MotionEvent = (motion: UIEvent.EventSubtype, event: UIEvent?)
+        public var onMotionEnded: ControlEvent<(MotionEvent)> {
+            let motionEvent: Observable<MotionEvent> = self
+                .methodInvoked(#selector(Base.motionEnded(_:with:)))
+                .map { arg in
+                    let motion = UIEvent.EventSubtype(rawValue: arg[0] as? Int ?? 0) ?? .none
+                    let event: UIEvent? = arg[1] as? UIEvent
+                    return (motion, event)
+            }
+            return ControlEvent(events: motionEvent)
+        }
+    }
+
+    extension UIViewController {
+        override open func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        }
+    }
+
 #endif
