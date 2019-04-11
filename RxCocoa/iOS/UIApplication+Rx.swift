@@ -51,6 +51,12 @@
             
             return ControlEvent(events: source)
         }
+
+        public static var didReceiveMemoryWarning: ControlEvent<()> {
+            let source = NotificationCenter.default.rx.notification(UIApplication.didReceiveMemoryWarningNotification).map { _ in return () }
+
+            return ControlEvent(events: source)
+        }
     }
 
 
